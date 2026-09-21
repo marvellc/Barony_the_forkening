@@ -83,3 +83,6 @@ xcode/Barony/Barony.xcodeproj/xcuserdata/*
 *.ilk
 /VS.2015/x64
 *.sqlite-journal
+/themes/merry/preview.png
+/themes/scarony/preview.png
+/.idea/Barony_the_forkening.iml
