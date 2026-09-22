@@ -20,6 +20,8 @@ RUN apt-get update  \
     rapidjson-dev  \
     rsync \
     git \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
  && pip3 install --break-system-packages --no-cache-dir cmake \
  && ln -sf /usr/local/bin/cmake /usr/bin/cmake \
  && mkdir -p /run/sshd \

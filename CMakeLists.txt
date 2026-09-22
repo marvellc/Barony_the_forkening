@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 4.0)
 project(barony)
 
 if (NOT CMAKE_BUILD_TYPE)
@@ -481,7 +481,7 @@ endif()
 
 #add_subdirectory(books)
  
-configure_file ( "${PROJECT_SOURCE_DIR}/src/Config.hpp.in" "${PROJECT_SOURCE_DIR}/src/Config.hpp")
+configure_file ( "${PROJECT_SOURCE_DIR}/src/Config.hpp" "${PROJECT_SOURCE_DIR}/src/Config.hpp")
 
 message("***************************")
 message("Debug flags: ")
@@ -497,7 +497,8 @@ message("***************************")
 
 add_subdirectory(src)
 if( WIN32 )
-	set(GAME_RESOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/barony.rc")
+	set(GAME_RESOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/barony.rc"
+			tests/test_example.cpp)
 	set(EDITOR_RESOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/editor.rc")
 endif()
 
@@ -831,3 +832,23 @@ if (APPLE)
 #    RESOURCE ${BOOK_FILES} ${IMAGE_FILES} ${ITEM_FILES} ${MAP_FILES} ${MODEL_FILES} ${MUSIC_FILES} ${SOUND_FILES}
 #  )
 endif()
+
+include(FetchContent)
+
+FetchContent_Declare(
+		Catch2
+		GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+		GIT_TAG v3.16.0
+)
+FetchContent_MakeAvailable(Catch2)
+message(STATUS "Catch2 source: ${catch2_SOURCE_DIR}")
+message(STATUS "Catch2 binary: ${catch2_BINARY_DIR}")
+
+add_executable(my_tests
+		tests/test_example.cpp
+)
+
+target_link_libraries(my_tests
+		PRIVATE
+		Catch2::Catch2WithMain
+)
