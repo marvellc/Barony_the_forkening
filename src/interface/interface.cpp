@@ -17,7 +17,7 @@
 #include "../entity.hpp"
 #include "../magic/magic.hpp"
 #include "interface.hpp"
-#include "../monster.hpp"
+#include "../monsters/monster.hpp"
 #include "../items.hpp"
 #include "../book.hpp"
 #include "../engine/audio/sound.hpp"

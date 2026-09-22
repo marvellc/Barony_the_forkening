@@ -14,7 +14,7 @@
 #include "../stat.hpp"
 #include "../items.hpp"
 #include "../magic/magic.hpp"
-#include "../monster.hpp"
+#include "../monsters/monster.hpp"
 #include "../net.hpp"
 #include "../player.hpp"
 #include "interface.hpp"

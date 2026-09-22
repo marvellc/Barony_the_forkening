@@ -25,7 +25,7 @@
 #include "items.hpp"
 #include "init.hpp"
 #include "shops.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "scores.hpp"
 #include "menu.hpp"
 #include "net.hpp"

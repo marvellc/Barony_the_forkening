@@ -14,7 +14,7 @@ See LICENSE for details.
 #include "stat.hpp"
 #include "entity.hpp"
 #include "items.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "engine/audio/sound.hpp"
 #include "magic/magic.hpp"
 #include "interface/interface.hpp"

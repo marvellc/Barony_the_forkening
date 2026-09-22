@@ -15,7 +15,7 @@
 #include "net.hpp"
 #include "menu.hpp"
 #include "ui/MainMenu.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "scores.hpp"
 #include "entity.hpp"
 #include "items.hpp"

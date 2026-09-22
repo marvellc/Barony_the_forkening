@@ -13,7 +13,7 @@
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "collision.hpp"
 #include "paths.hpp"
 #include "items.hpp"

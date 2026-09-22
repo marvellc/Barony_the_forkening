@@ -22,7 +22,7 @@
 #include "shops.hpp"
 #include "scores.hpp"
 #include "magic/magic.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "net.hpp"
 #ifdef STEAMWORKS
 #include <steam/steam_api.h>

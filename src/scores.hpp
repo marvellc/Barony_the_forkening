@@ -10,7 +10,7 @@
 -------------------------------------------------------------------------------*/
 
 #pragma once
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "json.hpp"
 #include "player.hpp"
 

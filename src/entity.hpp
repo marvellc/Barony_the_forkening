@@ -15,7 +15,7 @@
 #include "game.hpp"
 #include "stat.hpp"
 #include "light.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "interface/consolecommand.hpp"
 
 // entity flags

@@ -14,7 +14,7 @@
 #include "game.hpp"
 #include "stat.hpp"
 #include "menu.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "scores.hpp"
 #include "items.hpp"
 #include "interface/interface.hpp"

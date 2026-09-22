@@ -20,7 +20,7 @@
 #include "interface/interface.hpp"
 #include "scores.hpp"
 #include "net.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "player.hpp"
 #include "collision.hpp"
 #include "scores.hpp"

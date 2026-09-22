@@ -16,7 +16,7 @@
 #include "files.hpp"
 #include "items.hpp"
 #include "prng.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "magic/magic.hpp"
 #include "interface/interface.hpp"
 #include "book.hpp"

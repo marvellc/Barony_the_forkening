@@ -22,7 +22,7 @@
 #include "../mod_tools.hpp"
 #include "../input.hpp"
 #include "../collision.hpp"
-#include "../monster.hpp"
+#include "../monsters/monster.hpp"
 #include "../classdescriptions.hpp"
 #include "../shops.hpp"
 #include "../colors.hpp"

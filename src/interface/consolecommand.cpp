@@ -21,7 +21,7 @@
 #include "../book.hpp"
 #include "../engine/audio/sound.hpp"
 #include "../menu.hpp"
-#include "../monster.hpp"
+#include "../monsters/monster.hpp"
 #include "../net.hpp"
 #include "../paths.hpp"
 #include "../player.hpp"

@@ -16,7 +16,7 @@
 #include "../interface/interface.hpp"
 #include "../engine/audio/sound.hpp"
 #include "../items.hpp"
-#include "../monster.hpp"
+#include "../monsters/monster.hpp"
 #include "../net.hpp"
 #include "../collision.hpp"
 #include "../paths.hpp"

@@ -17,7 +17,7 @@
 #include "messages.hpp"
 #include "entity.hpp"
 #include "files.hpp"
-#include "monster.hpp"
+#include "monsters/monster.hpp"
 #include "interface/interface.hpp"
 #include "magic/magic.hpp"
 #include "engine/audio/sound.hpp"
