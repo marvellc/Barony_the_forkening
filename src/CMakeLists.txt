@@ -18,7 +18,7 @@ list(APPEND GAME_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/stat.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/actions/acttorch.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/actions/actplayer.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/actmonster.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/actions/actmonster.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/actions/actitem.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/actions/acthudweapon.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/actions/actgold.cpp"
