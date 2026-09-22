@@ -398,87 +398,6 @@ void Player::BookGUI_t::updateBookGUI()
 	{
 		rightColumn->setText("");
 	}
-	return;
-
-	//std::string pageText = "";
-	//if ( book && book->text )
-	//{
-	//	for ( int c = 0; book->text[c] != '\0'; ++c )
-	//	{
-	//		if ( book->text[c] == '\r' )
-	//		{
-	//			continue;
-	//		}
-	//		if ( book->text[c] == '\t' )
-	//		{
-	//			for ( int insertTabs = 3; insertTabs > 0; --insertTabs )
-	//			{
-	//				pageText += ' ';
-	//			}
-	//		}
-	//		else
-	//		{
-	//			pageText += book->text[c];
-	//		}
-	//	}
-	//}
-
-	////string_t* pagetext = (string_t*)bookPageNode->element;
-	//leftColumn->setText(pageText.c_str());
-	//leftColumn->reflowTextToFit(0);
-
-
-	//int len = strlen(leftColumn->getText());
-	//char* reflowedText = (char*)malloc(len + 1);
-	//memcpy(reflowedText, leftColumn->getText(), sizeof(char) * (len + 1));
-	//reflowedText[len] = '\0';
-
-	//pageText = "";
-	//bool firstIteration = true;
-	//std::vector<std::string> pages;
-	//char* nexttoken = nullptr;
-	//char* token = reflowedText;
-	//do {
-	//	nexttoken = Field::tokenize(token, "\n");
-	//	if ( !pageText.empty() || (!strcmp(token, "") && !firstIteration) )
-	//	{
-	//		pageText.push_back('\n');
-	//	}
-	//	firstIteration = false;
-	//	pageText += token;
-	//	leftColumn->setText(pageText.c_str());
-	//	if ( auto getText = Text::get(leftColumn->getText(), leftColumn->getFont(),
-	//		makeColor(255, 255, 255, 255), makeColor(0, 0, 0, 255)) )
-	//	{
-	//		int textHeight = getText->getHeight();
-	//		if ( textHeight > leftColumn->getSize().h )
-	//		{
-	//			// exceeds size, move to next page.
-	//			pages.push_back(pageText);
-	//			pageText = "";
-	//		}
-	//	}
-	//} while ( (token = nexttoken) != NULL );
-	//pages.push_back(pageText);
-
-	//if ( ticks % 250 > 120 )
-	//{
-	//	leftColumn->setText(pages[0].c_str());
-	//	rightColumn->setText(pages[1].c_str());
-	//}
-	//else
-	//{
-	//	//leftColumn->setText(pages[2].c_str());
-	//	rightColumn->setText("");
-	//}
-	//free(reflowedText);
-	/*
-	//int result = leftColumn->getLastLineThatFitsWithinHeight();
-	if ( bookPageNode->next != NULL )
-	{
-		string_t* pagetext = (string_t*)bookPageNode->next->element;
-	}
-	rightColumn->setText(pages[1].c_str());*/
 }
 
 /*-------------------------------------------------------------------------------
@@ -511,15 +430,12 @@ void Player::BookGUI_t::closeBookGUI()
 
 -------------------------------------------------------------------------------*/
 
-void Player::BookGUI_t::openBook(int index, Item* item)
+void Player::BookGUI_t::openBook(const int index, Item* item)
 {
-	if ( getBookDefaultNameFromIndex(index) == "" )
-	{
-		return;
-	}
+	if ( getBookDefaultNameFromIndex(index).empty() ) return;
 
-	for (int c = 0; c < num_banned_books; ++c) {
-		const char* banned_book = banned_books[c];
+	for ( const auto& banned_book : banned_books )
+	{
 		if ( !spawn_blood && getBookDefaultNameFromIndex(index, false) == banned_book )
 		{
 			openBook((index + 1) % numbooks, item);
@@ -530,7 +446,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	player.GUI.previousModule = player.GUI.activeModule;
 
 	players[player.playernum]->openStatusScreen(GUI_MODE_INVENTORY, 
-		INVENTORY_MODE_ITEM, player.GUI.MODULE_BOOK_VIEW); // Reset the GUI to the inventory.
+		INVENTORY_MODE_ITEM, GUI_t::MODULE_BOOK_VIEW); // Reset the GUI to the inventory.
 	bBookOpen = true;
 	openBookName = getBookDefaultNameFromIndex(index);
 	openBookItem = item;
@@ -541,9 +457,9 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	// add the book to the list of read books
 	bool hasreadbook = false;
 	node_t* node;
-	for ( node = booksRead.first; node != NULL; node = node->next )
+	for ( node = booksRead.first; node != nullptr; node = node->next )
 	{
-		if ( !strcmp(openBookName.c_str(), (char*)node->element) )
+		if ( !strcmp(openBookName.c_str(), static_cast<char*>(node->element)) )
 		{
 			hasreadbook = true;
 			break;
@@ -551,7 +467,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	}
 	if ( !hasreadbook )
 	{
-		char* bookName = (char*) malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1));
+		const auto bookName = static_cast<char*>(malloc(sizeof(char) * (strlen(openBookName.c_str()) + 1)));
 		strcpy(bookName, openBookName.c_str());
 
 		node = list_AddNodeFirst(&booksRead);
@@ -580,7 +496,7 @@ void Player::BookGUI_t::openBook(int index, Item* item)
 	}
 }
 
-void Player::SignGUI_t::openSign(std::string name, Uint32 uid)
+void Player::SignGUI_t::openSign(std::string name, const Uint32 uid)
 {
 	if ( ScriptTextParser.allEntries.find(name) == ScriptTextParser.allEntries.end() )
 	{
@@ -600,16 +516,19 @@ void Player::SignGUI_t::openSign(std::string name, Uint32 uid)
 
 	player.GUI.previousModule = player.GUI.activeModule;
 	player.closeAllGUIs(CloseGUIShootmode::CLOSEGUI_ENABLE_SHOOTMODE, CloseGUIIgnore::CLOSEGUI_CLOSE_ALL);
-	player.openStatusScreen(GUI_MODE_SIGN,
-		INVENTORY_MODE_ITEM, player.GUI.MODULE_SIGN_VIEW); // Reset the GUI to the inventory.
+	player.openStatusScreen(
+		GUI_MODE_SIGN,
+		INVENTORY_MODE_ITEM,
+		Player::GUI_t::MODULE_SIGN_VIEW
+		); // Reset the GUI to the inventory.
 	bSignOpen = true;
 	signName = name;
 	signUID = uid;
 
-	if ( Entity* entity = uidToEntity(uid) )
+	if (const Entity* tempEntity = uidToEntity(static_cast<Sint32>(uid)) )
 	{
-		signWorldCoordX = entity->x;
-		signWorldCoordY = entity->y;
+		signWorldCoordX = tempEntity->x;
+		signWorldCoordY = tempEntity->y;
 	}
 
 	// fix for binding left click to open sign
@@ -621,7 +540,7 @@ void Player::SignGUI_t::openSign(std::string name, Uint32 uid)
 
 void Player::SignGUI_t::closeSignGUI()
 {
-	bool wasOpen = bSignOpen;
+	const bool wasOpen = bSignOpen;
 #ifdef USE_THEORA_VIDEO
 	VideoManager[player.playernum].stop();
 #endif

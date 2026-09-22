@@ -5,18 +5,18 @@
 
 class Directory {
 public:
-	Directory(const char* name) :
+	explicit Directory(const char* name) :
 		path(name)
 	{
 		//TODO: Use datadir. rom:/ needs to get prepended...
 		DIR* dir;
-		struct dirent* ent;
-		if ((dir = opendir(name)) == NULL)
+		dirent* ent;
+		if ((dir = opendir(name)) == nullptr)
 		{
 			printlog("failed to open directory '%s'", name);
 			return;
 		}
-		while ((ent = readdir(dir)) != NULL)
+		while ((ent = readdir(dir)) != nullptr)
 		{
 			std::string entry(ent->d_name);
 			if (ent->d_name[0] != '.')

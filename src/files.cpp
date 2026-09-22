@@ -3891,11 +3891,9 @@ std::list<std::string> physfsGetFileNamesInDirectory(const char* dir)
 		printlog("[PhysFS]: Error: Failed to enumerate filenames in directory '%s': %s", dir, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 		return filenames;
 	}
-	char **i;
-	std::string file;
-	for ( i = rc; *i != NULL; i++ )
+	for ( char** i = rc; *i != nullptr; i++ )
 	{
-		file = *i;
+		std::string file = *i;
 		//printlog(" * We've got [%s].\n", file.c_str());
 		filenames.push_back(file);
 	}
