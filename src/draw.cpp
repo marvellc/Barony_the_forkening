@@ -17,7 +17,7 @@
 #include "player.hpp"
 #include "ui/Frame.hpp"
 #ifdef EDITOR
-#include "editor.hpp"
+#include "editor/editor.hpp"
 #include "mod_tools.hpp"
 #endif
 #include "items.hpp"

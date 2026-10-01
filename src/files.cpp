@@ -32,7 +32,7 @@
 #include "mod_tools.hpp"
 #include "ui/LoadingScreen.hpp"
 #ifdef EDITOR
-#include "editor.hpp"
+#include "editor/editor.hpp"
 #endif
 
 char datadir[PATH_MAX];

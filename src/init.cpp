@@ -28,7 +28,7 @@
 #include "light.hpp"
 #include "net.hpp"
 #ifdef EDITOR
- #include "editor.hpp"
+ #include "editor/editor.hpp"
 #endif // NINTENDO
 #include "menu.hpp"
 #if defined(STEAMWORKS) && !defined(EDITOR)

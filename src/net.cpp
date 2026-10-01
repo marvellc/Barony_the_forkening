@@ -314,7 +314,7 @@ bool messageLocalPlayers(Uint32 type, char const * const message, ...)
 
 -------------------------------------------------------------------------------*/
 
-bool messagePlayer(int player, Uint32 type, char const * const message, ...)
+bool messagePlayer(int player, Uint32 type, char const * const messagePtr, ...)
 {
 	if ( player < 0 || player >= MAXPLAYERS )
 	{
@@ -323,8 +323,8 @@ bool messagePlayer(int player, Uint32 type, char const * const message, ...)
 	char str[Player::MessageZone_t::ADD_MESSAGE_BUFFER_LENGTH] = { 0 };
 
 	va_list argptr;
-	va_start( argptr, message );
-	vsnprintf( str, Player::MessageZone_t::ADD_MESSAGE_BUFFER_LENGTH - 1, message, argptr );
+	va_start( argptr, messagePtr );
+	vsnprintf( str, Player::MessageZone_t::ADD_MESSAGE_BUFFER_LENGTH - 1, messagePtr, argptr );
 	va_end( argptr );
 
 	strncpy(str, messageSanitizePercentSign(str, nullptr).c_str(), Player::MessageZone_t::ADD_MESSAGE_BUFFER_LENGTH - 1);

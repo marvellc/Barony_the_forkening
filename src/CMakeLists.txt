@@ -129,7 +129,7 @@ list(APPEND EDITOR_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/list.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/hash.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/files.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/editor.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/editor/editor.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/entity_shared.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/stat_editor.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/stat_shared.cpp"
