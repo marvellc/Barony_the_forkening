@@ -29,7 +29,7 @@
 #include "scores.hpp"
 #include "menu.hpp"
 #include "net.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "steam.hpp"
 #endif
@@ -56,7 +56,7 @@
 #include "ui/MainMenu.hpp"
 #include "ui/Image.hpp"
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 //Helper func. //TODO: Bugger.
 void* cpp_SteamMatchmaking_GetLobbyOwner(void* steamIDLobby)
 {
@@ -156,7 +156,7 @@ sex_t lastSex = MALE;
 PlayerRaces lastRace = RACE_HUMAN;
 int lastAppearance = 0;
 bool showRaceInfo = false;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 std::vector<SteamUGCDetails_t *> workshopSubscribedItemList;
 std::vector<std::pair<std::string, uint64>> gamemods_workshopLoadedFileIDMap;
 #else
@@ -360,7 +360,7 @@ void changeSettingsTab(int option)
 
 bool isAchievementUnlockedForClassUnlock(int race)
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	bool unlocked = false;
 	if ( enabledDLCPack1 && race == RACE_SKELETON && SteamUserStats()->GetAchievement("BARONY_ACH_BONY_BARON", &unlocked) )
 	{
@@ -744,7 +744,7 @@ static void handleMainMenu(bool mode)
 	Sint32 omousex = inputs.getMouse(clientnum, Inputs::MouseInputs::OX);
 	Sint32 omousey = inputs.getMouse(clientnum, Inputs::MouseInputs::OY);
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if ( SteamApps()->BIsDlcInstalled(1010820) )
 	{
 		enabledDLCPack1 = true;
@@ -779,7 +779,7 @@ static void handleMainMenu(bool mode)
 			Uint32 len = strlen(Language::get(1910 + subtitleCurrent));
 			ttfPrintTextColor(ttf16, src.x + src.w / 2 - (len * TTF16_WIDTH) / 2, src.y + src.h - 32, colorYellow, true, Language::get(1910 + subtitleCurrent));
 		}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		if ( mode )
 		{
 			if ( SteamUser()->BLoggedOn() )
@@ -909,7 +909,7 @@ static void handleMainMenu(bool mode)
 			}
 #endif
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			getSizeOfText(ttf8, Language::get(2549), &w, &h);
 			if ( (omousex >= xres - 8 - w && omousex < xres && omousey >= 8 && omousey < 8 + h)
 				&& subwindow == 0
@@ -1353,7 +1353,7 @@ static void handleMainMenu(bool mode)
 			{
 				ttfPrintText(ttf16, text.x, text.y, menuOptions.at(menuIndex).first.c_str());
 			}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			++menuIndex;
 			text.y = yres / 4 + 80 + (menuOptions.at(menuIndex).second - 1) * 24;
 			menuOptionSize = std::max(static_cast<Uint32>(menuOptions.at(menuIndex).first.size()), static_cast<Uint32>(4));
@@ -2092,7 +2092,7 @@ static void handleMainMenu(bool mode)
 									drawTooltip(&tooltip);
 									ttfPrintTextFormattedColor(ttf12, tooltip.x + 4, tooltip.y + 6, uint32ColorOrange, Language::get(3200));
 								}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 								if ( SteamUser()->BLoggedOn() )
 								{
 									if ( inputs.bMouseLeft(clientnum) )
@@ -4024,7 +4024,7 @@ static void handleMainMenu(bool mode)
 				ttfPrintTextFormatted(ttf12, subx1 + 36, current_y, "[ ] %s", "disable netcode FPS optimization");
 			}
 			current_y += 16;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( settings_disableMultithreadedSteamNetworking )
 			{
 				ttfPrintTextFormatted(ttf12, subx1 + 36, current_y, "[x] %s", Language::get(3147));
@@ -4208,7 +4208,7 @@ static void handleMainMenu(bool mode)
 					}
 				}
 				current_y += 16;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				if ( omousey >= current_y && omousey < current_y + 12 )
 				{
 					tooltip_box.w = longestline(Language::get(3148)) * TTF12_WIDTH + 8;
@@ -4629,7 +4629,7 @@ static void handleMainMenu(bool mode)
 
 			if ( !directConnect && LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 			{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				if ( c != clientnum )
 				{
 					for ( int remoteIDIndex = 0; remoteIDIndex < MAXPLAYERS; ++remoteIDIndex )
@@ -4755,7 +4755,7 @@ static void handleMainMenu(bool mode)
 				// lobby name
 				if ( LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 				{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					inputstr = currentLobbyName;
 					inputlen = 31;
 #endif
@@ -4803,7 +4803,7 @@ static void handleMainMenu(bool mode)
 						// update lobby data
 						if ( !directConnect && LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 						{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 							char svFlagsChar[16];
 							snprintf(svFlagsChar, 15, "%d", svFlags);
 							SteamMatchmaking()->SetLobbyData(*static_cast<CSteamID*>(currentLobby), "svFlags", svFlagsChar);
@@ -4818,7 +4818,7 @@ static void handleMainMenu(bool mode)
 			{
 				if ( LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 				{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					for ( Uint32 i = 0; i < 2; i++ )
 					{
 						if ( mouseInBounds(clientnum, xres / 2 + 8 + 6, xres / 2 + 8 + 30, suby1 + 256 + i * 16, suby1 + 268 + i * 16) )
@@ -4874,7 +4874,7 @@ static void handleMainMenu(bool mode)
 				keystatus[SDLK_TAB] = 0;
 				if ( !directConnect && LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 				{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					if ( inputstr == currentLobbyName )
 					{
 						inputstr = lobbyChatbox;
@@ -4975,7 +4975,7 @@ static void handleMainMenu(bool mode)
 		// lobby type elements
 		if ( !directConnect && LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( multiplayer == SERVER )
 			{
 				for ( Uint32 i = 0; i < 2; i++ )
@@ -5018,7 +5018,7 @@ static void handleMainMenu(bool mode)
 
 		if ( !directConnect && LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			// server name
 			drawDepressed(xres / 2, suby1 + 56, xres / 2 + 388, suby1 + 72);
 			ttfPrintTextFormatted(ttf12, xres / 2 + 2, suby1 + 58, "%s", currentLobbyName);
@@ -5317,7 +5317,7 @@ static void handleMainMenu(bool mode)
 				ttfPrintTextFormatted(ttf12, tooltip_box.x + 4, tooltip_box.y + 4, flagStringBuffer);
 			}
 		}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		// draw server workshop mod list
 		if ( !directConnect && currentLobby )
 		{
@@ -5509,7 +5509,7 @@ static void handleMainMenu(bool mode)
 	}
 
 	// leaderboards window
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if ( score_leaderboard_window != 0 && g_SteamLeaderboards )
 	{
 		int numEntriesToShow = 15;
@@ -5919,7 +5919,7 @@ static void handleMainMenu(bool mode)
 			}
 			else
 			{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				ttfPrintTextFormatted(ttf16, subx1 + 448, suby1 + 104, Language::get(1404), g_SteamLeaderboards->downloadedTags[g_SteamLeaderboards->currentLeaderBoardIndex][TAG_TOTAL_SCORE]);
 #endif // STEAMWORKS
 			}
@@ -6277,7 +6277,7 @@ static void handleMainMenu(bool mode)
 
 		int filename_padx2 = filename_padx + filenameMaxLength * TTF12_WIDTH + 8;
 		int filename_pady2 = filename_pady + numFileEntries * TTF12_HEIGHT + 8;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		if ( gamemods_window == 1 || gamemods_window == 2 || gamemods_window == 5 )
 		{
 			if ( !currentDirectoryFiles.empty() )
@@ -8840,7 +8840,7 @@ void doNewGame(bool makeHighscore) {
 	monsterGlobalAttackTimeMultiplier = 1;
 	skipLevelsOnLoad = 0;
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if ( !directConnect )
 	{
 		if ( currentLobby )
@@ -11078,7 +11078,7 @@ void buttonStartServer(button_t* my)
 // opens the steam dialog to invite friends
 void buttonInviteFriends(button_t* my)
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if (SteamUser()->BLoggedOn() && currentLobby)
 	{
 		SteamFriends()->ActivateGameOverlayInviteDialog(*static_cast<CSteamID*>(currentLobby));
@@ -11283,7 +11283,7 @@ void buttonScoreToggle(button_t* my)
 	loadScore(score_window - 1);
 }
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 
 void buttonLeaderboardFetch(button_t* my)
 {
@@ -12058,7 +12058,7 @@ void buttonGamemodsBaseDirectory(button_t* my)
 	currentDirectoryFiles = directoryContents(directoryPath.c_str(), true, false);
 }
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 void buttonGamemodsSelectDirectoryForUpload(button_t* my)
 {
 	if ( !currentDirectoryFiles.empty() )
@@ -12868,7 +12868,7 @@ bool gamemodsRemovePathFromMountedFiles(std::string findStr)
 		if ( line.first.compare(findStr) == 0 )
 		{
 			// found entry, remove from list.
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			for ( std::vector<std::pair<std::string, uint64>>::iterator itId = gamemods_workshopLoadedFileIDMap.begin();
 				itId != gamemods_workshopLoadedFileIDMap.end(); ++itId )
 			{
@@ -13215,7 +13215,7 @@ bool gamemodsMountAllExistingPaths()
 
 void gamemodsWindowClearVariables()
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if ( g_SteamWorkshop )
 	{
 		g_SteamWorkshop->createItemResult = {};
@@ -13282,7 +13282,7 @@ bool drawClickableButton(int padx, int pady, int padw, int padh, Uint32 btnColor
 	}
 	return clicked;
 }
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 void gamemodsWorkshopPreloadMod(int fileID, std::string modTitle)
 {
 	char fullpath[PATH_MAX] = "";

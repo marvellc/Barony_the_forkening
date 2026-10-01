@@ -7288,7 +7288,7 @@ const char* Player::getAccountName() const {
 	    }
     } else {
 		if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if (isLocalPlayer()) {
 				return SteamFriends()->GetPersonaName();
 			} else {

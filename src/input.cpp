@@ -367,7 +367,7 @@ Input::ControllerType Input::getControllerType(int index) {
     if (*cvar_forceGlyphs >= 0) {
         return (ControllerType)*cvar_forceGlyphs;
     } else {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
         if (SteamUtils()->IsSteamRunningOnSteamDeck()) {
             return ControllerType::SteamDeck;
         }

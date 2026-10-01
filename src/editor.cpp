@@ -24,7 +24,7 @@
 #define EDITOR
 #endif
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "steam.hpp"
 #endif // STEAMWORKS
@@ -1643,7 +1643,7 @@ int main(int argc, char** argv)
 	if ( (x = initApp("Barony Editor", fullscreen)) )
 	{
 		printlog("Critical error: %d\n", x);
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Uh oh",
 								"Barony has encountered a critical error and cannot start.\n\n"
 								"Please check the log.txt file in the game directory for additional info\n"
@@ -1661,7 +1661,7 @@ int main(int argc, char** argv)
 		exit(x);
 	}
 	
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	g_SteamStatistics->RequestStats();
 #endif // STEAMWORKS
 
@@ -2129,7 +2129,7 @@ int main(int argc, char** argv)
 		// game logic
 		(void)handleEvents();
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		SteamAPI_RunCallbacks();
 		if ( SteamUser()->BLoggedOn() && !achievementCartographer )
 		{

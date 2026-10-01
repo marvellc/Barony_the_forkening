@@ -1021,7 +1021,7 @@ public:
 extern AchievementObserver achievementObserver;
 #endif
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 bool steamLeaderboardSetScore(score_t* score);
 bool steamLeaderboardReadScore(int tags[CSteamLeaderboards::k_numLeaderboardTags]);
 #endif // STEAMWORKS

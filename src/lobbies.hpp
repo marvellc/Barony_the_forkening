@@ -110,7 +110,7 @@ public:
 		printlog("[Lobbies Error]: %s", newstr);
 	}
 	static std::string getLobbyJoinFailedConnectString(int result);
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	CSteamID steamLobbyToValidate = {};
 	void steamValidateAndJoinLobby(CSteamID& id);
 	bool validateSteamLobbyDataOnJoin();

@@ -3564,7 +3564,7 @@ void updateAchievementThankTheTank(int player, Entity* target, bool targetKilled
 	}
 }
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 
 bool steamLeaderboardSetScore(score_t* score)
 {
@@ -4613,7 +4613,7 @@ void AchievementObserver::updatePlayerAchievement(int player, Achievement achiev
 			if ( gameModeManager.getMode() == GameModeManager_t::GAME_MODE_TUTORIAL )
 			{
 				bool alternateUnlock = false;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				if ( SteamUser()->BLoggedOn() )
 				{
 					SteamUserStats()->GetAchievement("BARONY_ACH_LICH_HUNTER", &alternateUnlock);

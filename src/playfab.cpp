@@ -3,7 +3,7 @@
 #include "files.hpp"
 #include "mod_tools.hpp"
 #include "interface/ui.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include "steam.hpp"
 #endif
 #ifdef USE_EOS
@@ -240,7 +240,7 @@ void PlayfabUser_t::OnLoginSuccess(const PlayFab::ClientModels::LoginResult& res
     {
     case PlayerType_Steam:
     {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
         if ( SteamUser()->BLoggedOn() )
         {
             request.DisplayName = SteamFriends()->GetPersonaName();
@@ -343,7 +343,7 @@ void PlayfabUser_t::loginEpic()
 
 void PlayfabUser_t::loginSteam()
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
     PlayFab::ClientModels::LoginWithSteamRequest request;
     request.CreateAccount = true;
     request.SteamTicket = SteamClientRequestAuthTicket();
@@ -2044,7 +2044,7 @@ void PlayfabUser_t::init()
     PlayFab::PlayFabSettings::staticSettings->titleId = BUILD_ENV_PFTID;
     bInit = true;
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
     type = PlayerType_Steam;
 #elif defined(NINTENDO)
     type = PlayerType_Nintendo;

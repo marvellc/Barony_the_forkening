@@ -29,7 +29,7 @@
 
 #include <cassert>
 #include <functional>
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <nfd.h>
 #endif
 #ifdef USE_PLAYFAB
@@ -830,7 +830,7 @@ namespace MainMenu {
 /******************************************************************************/
 
 	static void resetLobbyJoinFlowState() {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	    requestingLobbies = false;
         connectingToLobby = false;
         connectingToLobbyWindow = false;
@@ -847,7 +847,7 @@ namespace MainMenu {
 	static void flushP2PPackets(int msMin, int msMax) {
 	    if (!directConnect) {
 		    if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		        CSteamID newSteamID;
 
 			    // if we got a packet, flush any remaining packets from the queue.
@@ -11163,7 +11163,7 @@ bind_failed:
 		logoutOfEpic();
 #endif
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	    if (currentLobby) {
 		    SteamMatchmaking()->LeaveLobby(*static_cast<CSteamID*>(currentLobby));
 		    cpp_Free_CSteamID(currentLobby);
@@ -11186,7 +11186,7 @@ bind_failed:
 				}
 				bool clientHasLostP2P = false;
 				if (!directConnect && LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					if (!steamIDRemote[i - 1]) {
 						clientHasLostP2P = true;
 					}
@@ -11230,7 +11230,7 @@ bind_failed:
 			bool hostHasLostP2P = false;
 			if (!directConnect) {
 			    if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                     if (!connectingToLobby && !connectingToLobbyWindow) {
 				        if (!steamIDRemote[0]) {
 					        hostHasLostP2P = true;
@@ -11256,7 +11256,7 @@ bind_failed:
 #endif // USE_EOS
 			    }
 			    else if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			        error_code = connectingToLobbyStatus;
 #endif //STEAMWORKS
 			    }
@@ -11402,7 +11402,7 @@ bind_failed:
 
 			client_disconnected[index] = true;
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
             if (steamIDRemote[index - 1]) {
                 cpp_Free_CSteamID(steamIDRemote[index - 1]);
 			    steamIDRemote[index - 1] = nullptr;
@@ -11594,7 +11594,7 @@ bind_failed:
 				net_packet->address.port = net_clients[c - 1].port;
 				sendPacketSafe(net_sock, -1, net_packet, c - 1);
 			}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
 				if (!directConnect && currentLobby) {
 					char svFlagsChar[16];
@@ -11671,7 +11671,7 @@ bind_failed:
 	static void updateLobby() {
 	    if ( !directConnect && LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			// update server name
 			if ( currentLobby )
 			{
@@ -11874,7 +11874,7 @@ bind_failed:
             }
 			client_disconnected[player] = true;
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
             if (steamIDRemote[player - 1]) {
                 cpp_Free_CSteamID(steamIDRemote[player - 1]);
 			    steamIDRemote[player - 1] = nullptr;
@@ -11964,7 +11964,7 @@ bind_failed:
     };
 
 	static void handlePacketsAsServer() {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		CSteamID newSteamID;
 #endif
 #if defined USE_EOS
@@ -11980,7 +11980,7 @@ bind_failed:
 				}
 			} else {
 				if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					uint32_t packetlen = 0;
 					if (!SteamNetworking()->IsP2PPacketAvailable(&packetlen, 0)) {
 						break;
@@ -12025,7 +12025,7 @@ bind_failed:
 			    // the associated ID is already connected to this server.
 			    if (!directConnect) {
 				    if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					    bool skipJoin = false;
 					    for (int c = 1; c < MAXPLAYERS; c++) {
 						    if (client_disconnected[c] || !steamIDRemote[c - 1]) {
@@ -12064,7 +12064,7 @@ bind_failed:
 			    // finalize connections for Steamworks / EOS
 			    if (result == NetworkingLobbyJoinRequestResult::NET_LOBBY_JOIN_P2P_FAILURE) {
 				    if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					    for (int responses = 0; responses < 5; ++responses) {
 						    SteamNetworking()->SendP2PPacket(newSteamID, net_packet->data, net_packet->len, k_EP2PSendReliable, 0);
 						    SDL_Delay(5);
@@ -12081,7 +12081,7 @@ bind_failed:
 				}
 				else if ( result == NetworkingLobbyJoinRequestResult::NET_LOBBY_JOIN_P2P_SUCCESS ) {
 					if ( LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM ) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 						if ( steamIDRemote[playerNum - 1] ) {
 							cpp_Free_CSteamID(steamIDRemote[playerNum - 1]);
 						}
@@ -12394,7 +12394,7 @@ bind_failed:
 
 	static void handlePacketsAsClient() {
 	    if (receivedclientnum == false) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			CSteamID newSteamID;
 			if (!directConnect && LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
 				if (ticks - client_keepalive[0] >= 30 * TICKS_PER_SECOND) {
@@ -12436,7 +12436,7 @@ bind_failed:
 					}
 			    }
 			} else if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				for (Uint32 numpacket = 0; numpacket < PACKET_LIMIT && net_packet; numpacket++) {
 					Uint32 packetlen = 0;
 					if ( !SteamNetworking()->IsP2PPacketAvailable(&packetlen, 0) ) {
@@ -12495,7 +12495,7 @@ bind_failed:
 					printlog("connection attempt denied by server, error code: %d.\n", error);
 				    //flushP2PPackets(2000, 5000);
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					if (!directConnect) {
 						if (currentLobby) {
 							SteamMatchmaking()->LeaveLobby(*static_cast<CSteamID*>(currentLobby));
@@ -12601,7 +12601,7 @@ bind_failed:
 
                     // TODO subscribe to mods!
 #if 0
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					if (!directConnect && LobbyHandler.getJoiningType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
 						const char* serverNumModsChar = SteamMatchmaking()->GetLobbyData(*static_cast<CSteamID*>(currentLobby), "svNumMods");
 						int serverNumModsLoaded = atoi(serverNumModsChar);
@@ -12638,7 +12638,7 @@ bind_failed:
 				}
 			}
 		} else { // aka, if (receivedclientnum == true)
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		    CSteamID newSteamID;
 		    joinLobbyWaitingForHostResponse = false;
 #endif
@@ -12652,7 +12652,7 @@ bind_failed:
 				    }
 			    } else {
 				    if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					    uint32_t packetlen = 0;
 					    if (!SteamNetworking()->IsP2PPacketAvailable(&packetlen, 0)) {
 						    break;
@@ -12738,7 +12738,7 @@ bind_failed:
 			}
 
             if (LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				if (currentLobby) {
 			        if (multiplayer != CLIENT || clientnum != 0) {
 					    const char* memberNumChar = SteamMatchmaking()->GetLobbyMemberData(
@@ -12783,7 +12783,7 @@ bind_failed:
 	    }
 	}
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	CSteamID* getLobbySteamID(const char* name) {
 	    int lobbyID = -1;
         const char str[] = "steam:";
@@ -12912,7 +12912,7 @@ bind_failed:
 #endif
 				}
 			} else {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                 if (LobbyHandler.getJoiningType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
                     if (joinLobbyWaitingForHostResponse) {
 		                if (connectingToLobbyStatus != EResult::k_EResultOK) {
@@ -13008,7 +13008,7 @@ bind_failed:
 
         // initialize connection
 	    if (lobbyType == LobbyType::LobbyOnline) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
             {
                 CSteamID* lobby = nullptr;
                 if (address) {
@@ -13058,7 +13058,7 @@ bind_failed:
 		            else if ((char)tolower((int)address[0]) == 'e' && strlen(address) == 5) {
 						// save address for next time
 						stringCopyUnsafe(last_address, address, sizeof(last_address));
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 						if (!LobbyHandler.crossplayEnabled) {
 							// can't join an epic lobby if crossplay is not enabled
 							connectionErrorPrompt(Language::get(5343));
@@ -14978,7 +14978,7 @@ failed:
 #endif // USE_EOS
             }
             else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                 if (::currentLobbyType == k_ELobbyTypeInvisible) {
                     invite->setPressed(true);
                 }
@@ -15006,7 +15006,7 @@ failed:
 #endif // USE_EOS
                     }
                     else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                         ::currentLobbyType = k_ELobbyTypeInvisible;
                         auto lobby = static_cast<CSteamID*>(::currentLobby);
                         SteamMatchmaking()->SetLobbyType(*lobby, ::currentLobbyType);
@@ -15067,7 +15067,7 @@ failed:
 #endif // USE_EOS
             }
             else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                 if (::currentLobbyType == k_ELobbyTypePublic) {
                     auto lobby = static_cast<CSteamID*>(::currentLobby);
                     const char* friends_only = SteamMatchmaking()->GetLobbyData(*lobby, "friends_only");
@@ -15097,7 +15097,7 @@ failed:
 #endif // USE_EOS
                     }
                     else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                         ::currentLobbyType = k_ELobbyTypePublic;
                         auto lobby = static_cast<CSteamID*>(::currentLobby);
                         SteamMatchmaking()->SetLobbyType(*lobby, ::currentLobbyType);
@@ -15170,7 +15170,7 @@ failed:
 #endif // USE_EOS
             }
             else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                 if (::currentLobbyType == k_ELobbyTypePublic) {
                     auto lobby = static_cast<CSteamID*>(::currentLobby);
                     const char* friends = SteamMatchmaking()->GetLobbyData(*lobby, "friends_only");
@@ -15202,7 +15202,7 @@ failed:
 #endif // USE_EOS
                     }
                     else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                         ::currentLobbyType = k_ELobbyTypePublic;
                         auto lobby = static_cast<CSteamID*>(::currentLobby);
                         SteamMatchmaking()->SetLobbyType(*lobby, ::currentLobbyType);
@@ -18404,7 +18404,7 @@ failed:
 			const int h = image->getHeight();
 			image->draw(nullptr, SDL_Rect{ x - w / 2, y - h / 2, w, h }, viewport);
 #else
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
             const bool steamdeck = SteamUtils()->IsSteamRunningOnSteamDeck();
 #else
             constexpr bool steamdeck = false;
@@ -19584,7 +19584,7 @@ failed:
 #endif // USE_EOS
 				}
 				else if ( LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM ) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					if ( ::currentLobbyType == k_ELobbyTypeInvisible )
 					{
 						float_warning_add(lobbyWarnings, "3", Language::get(6301));
@@ -19795,7 +19795,7 @@ failed:
 #endif // USE_EOS
                         }
                         else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                             stringCopy(currentLobbyName, field.getText(),
                                 sizeof(currentLobbyName), field.getTextLen());
 #endif // STEAMWORKS
@@ -19810,7 +19810,7 @@ failed:
 #endif // USE_EOS
                         }
                         else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                             field->setText(currentLobbyName);
 #endif // STEAMWORKS
                         }
@@ -19831,7 +19831,7 @@ failed:
 #endif // USE_EOS
 	                    }
 	                    else if (LobbyHandler.getJoiningType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	                        field->setText(currentLobbyName);
 #endif // STEAMWORKS
 	                    }
@@ -20642,7 +20642,7 @@ failed:
 
         // this is a steam lobby, check if it's friends-only or invite-only and filter it
         if (info.address[0] == 's') {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
             auto lobby = getLobbySteamID(info.address.c_str());
             if (lobby) {
 				bool privateLobby = false;
@@ -21040,7 +21040,7 @@ failed:
 #endif
 
 	    // close current window
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	    if ( connectingToLobbyWindow )
 	    {
 		    // we quit the connection window before joining lobby, but invite was mid-flight.
@@ -21158,13 +21158,13 @@ failed:
 
         // request new lobbies
 	    LobbyHandler.selectedLobbyInList = 0;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	    requestingLobbies = true;
 	    cpp_SteamMatchmaking_RequestLobbyList(nullptr);
 #endif
 #ifdef USE_EOS
 	    EOS.bRequestingLobbies = true;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	    if ( EOS.CurrentUserInfo.bUserLoggedIn )
 	    {
 		    EOS.searchLobbies(EOSFuncs::LobbyParameters_t::LobbySearchOptions::LOBBY_SEARCH_ALL,
@@ -23198,7 +23198,7 @@ failed:
 #endif // USE_EOS
 		}
 		else if (LobbyHandler.getHostingType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			for ( int c = 0; c < MAXPLAYERS; c++ ) {
 				if ( steamIDRemote[c] ) {
 					cpp_Free_CSteamID(steamIDRemote[c]);
@@ -23825,7 +23825,7 @@ failed:
 				}
 			}
 			if ( info.multiplayer_type == SERVERCROSSPLAY ) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				LobbyHandler.hostingType = LobbyHandler_t::LobbyServiceType::LOBBY_STEAM;
 				LobbyHandler.setP2PType(LobbyHandler_t::LobbyServiceType::LOBBY_STEAM);
 #ifdef USE_EOS
@@ -23851,7 +23851,7 @@ failed:
 				}
 				else
 				{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					LobbyHandler.hostingType = LobbyHandler_t::LobbyServiceType::LOBBY_STEAM;
 					LobbyHandler.setP2PType(LobbyHandler_t::LobbyServiceType::LOBBY_STEAM);
 #endif
@@ -26394,7 +26394,7 @@ failed:
 		enabledDLCPack2 = nxCheckDLC(1);
 		enabledDLCPack3 = nxCheckDLC(2);
 #endif
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		if ( !enabledDLCPack1 )
 		{
 			enabledDLCPack1 = SteamApps()->BIsDlcInstalled(1010820);
@@ -26445,7 +26445,7 @@ failed:
 				}
 			}
         } else {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if (ticks % 250 == 0) {
 				bool unlocked = false;
 				if (SteamUserStats()->GetAchievement("BARONY_ACH_GUDIPARIAN_BAZI", &unlocked)) {
@@ -26681,7 +26681,7 @@ failed:
 				"glow_right");
 		}
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	    if (!cmd_line.empty()) {
 	        printlog(cmd_line.c_str());
             steam_ConnectToLobby(cmd_line.c_str());
@@ -26690,7 +26690,7 @@ failed:
 #endif // STEAMWORKS
 	}
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
     class GetPlayersOnline {
     private:
         void OnGetNumberOfCurrentPlayers
@@ -27480,7 +27480,7 @@ failed:
 				});
 			version->setColor(0xffffffff);
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			auto online_players = main_menu_frame->addField("online_players", 32);
 			online_players->setFont(smallfont_outline);
 			online_players->setHJustify(Field::justify_t::RIGHT);
@@ -28013,7 +28013,7 @@ failed:
 	            destroyMainMenu();
 	            createMainMenu(false);
 	        }
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
             if (processLobbyInvite(lobby)) { // load any relevant save data
                 connectToServer(nullptr, lobby, LobbyType::LobbyOnline);
             } else {
@@ -28459,7 +28459,7 @@ failed:
 
 	static std::string mods_active_tab = "";
 	static Uint32 mods_loading_tick = 0;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	static void createWorkshopCreateMenu(SteamUGCDetails_t* details);
 #endif
 	static bool startModdedGame()
@@ -28523,7 +28523,7 @@ failed:
 		isDownloaded = true;
 		if ( isWorkshopMod )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			auto itemDetails = g_SteamWorkshop->m_subscribedItemListDetails[index];
 			bool itemDownloaded = SteamUGC()->GetItemInstallInfo(itemDetails.m_nPublishedFileId, NULL, fullpath, PATH_MAX, NULL);
 			isDownloaded = itemDownloaded;
@@ -29125,7 +29125,7 @@ failed:
 				bool isWorkshopMod = reinterpret_cast<intptr_t>(button.getUserData()) == 1 ? true : false;
 				if ( isWorkshopMod )
 				{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					createWorkshopCreateMenu(&g_SteamWorkshop->m_subscribedItemListDetails[index]);
 #endif
 				}
@@ -29164,7 +29164,7 @@ failed:
 	};
 
 	static void workshopLoadSubscribedItems(Button& button) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		if ( !g_SteamWorkshop ) { return; }
 		mods_loading_tick = ticks;
 		mods_active_tab = "Steam Workshop";
@@ -29360,7 +29360,7 @@ failed:
 	}
 
 	static void workshopLoadMyItems(Button& button) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		if ( !g_SteamWorkshop ) { return; }
 		mods_loading_tick = ticks;
 		mods_active_tab = "My Workshop Items";
@@ -29880,7 +29880,7 @@ failed:
 	static void createModsWindow() {
 		if ( forceWorkshopCacheUpdate )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			Mods::forceDownloadCachedImages = true;
 #endif
 		}
@@ -29982,7 +29982,7 @@ failed:
 		};
 		std::vector<Option> mod_tabs = {
 			{"Local Mods", Language::get(5866), workshopLoadLocalMods},
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			{"Steam Workshop", Language::get(5867), workshopLoadSubscribedItems},
 			{"My Workshop Items", Language::get(5868), workshopLoadMyItems},
 #endif
@@ -30023,7 +30023,7 @@ failed:
 		back_button->setWidgetPageLeft("tab_left");
 		back_button->setWidgetPageRight("tab_right");
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		if ( mods_active_tab == "" )
 		{
 			mods_active_tab = mod_tabs[1].name;
@@ -30048,12 +30048,12 @@ failed:
 		load_status_frame->setTickCallback([](Widget& widget) {
 			std::vector<Option> mod_tabs = {
 			{"Local Mods", Language::get(5866), workshopLoadLocalMods},
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			{"Steam Workshop", Language::get(5867), workshopLoadSubscribedItems},
 			{"My Workshop Items", Language::get(5868), workshopLoadMyItems},
 #endif
 			};
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( mods_active_tab == mod_tabs[2].name )
 			{
 				widget.setInvisible(true);
@@ -30303,7 +30303,7 @@ failed:
 		enter->setWidgetBack("back_button");
 		enter->setWidgetUp(mod_tabs[mod_tabs.size() - 1].name);
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		auto new_workshop_mod = window->addButton("new_workshop_mod");
 		new_workshop_mod->setText(Language::get(5879));
 		new_workshop_mod->setSize(SDL_Rect{ 902, 630, 164, 62 });
@@ -30646,7 +30646,7 @@ failed:
 
 				std::vector<Option> mod_tabs = {
 					{"Local Mods", Language::get(5866), workshopLoadLocalMods},
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					{"Steam Workshop", Language::get(5867), workshopLoadSubscribedItems},
 					{"My Workshop Items", Language::get(5868), workshopLoadMyItems},
 #endif
@@ -30690,7 +30690,7 @@ failed:
 
 				std::vector<Option> mod_tabs = {
 					{"Local Mods", Language::get(5866), workshopLoadLocalMods},
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 					{"Steam Workshop", Language::get(5867), workshopLoadSubscribedItems},
 					{"My Workshop Items", Language::get(5868), workshopLoadMyItems},
 #endif
@@ -30737,7 +30737,7 @@ failed:
 
 			std::vector<Option> mod_tabs = {
 			{"Local Mods", Language::get(5866), workshopLoadLocalMods},
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			{"Steam Workshop", Language::get(5867), workshopLoadSubscribedItems},
 			{"My Workshop Items", Language::get(5868), workshopLoadMyItems},
 #endif
@@ -30789,7 +30789,7 @@ failed:
 	static std::string modDescToUpload = "";
 	static std::set<int> modTags;
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	static void createWorkshopCreateMenu(SteamUGCDetails_t* details) {
 		if ( !details )
 		{

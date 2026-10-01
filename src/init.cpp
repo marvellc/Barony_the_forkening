@@ -31,7 +31,7 @@
  #include "editor.hpp"
 #endif // NINTENDO
 #include "menu.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
  #include <steam/steam_api.h>
  #include "steam.hpp"
 #endif // STEAMWORKS
@@ -93,7 +93,7 @@ bool mountBaseDataFolders() {
 			PHYSFS_mkdir("data/statues");
 			PHYSFS_mkdir("data/scripts");
 			PHYSFS_mkdir("config");
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			PHYSFS_mkdir("workshop_cache");
 #endif
 #ifdef NINTENDO
@@ -258,7 +258,7 @@ int initApp(char const * const title, int fullscreen)
 	}*/
 
 	// init steamworks
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	SteamAPI_RestartAppIfNecessary(STEAM_APPID);
 	if ( !SteamAPI_Init() )
 	{
@@ -1392,7 +1392,7 @@ int deinitApp()
 	SDL_Quit();
 
 	// shutdown steamworks
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if (steam_init) {
 		printlog("storing user stats to Steam...\n");
 		SteamUserStats()->StoreStats();

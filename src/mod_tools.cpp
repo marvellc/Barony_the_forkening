@@ -11198,7 +11198,7 @@ void Mods::updateModCounts()
 		}
 	}
 }
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 std::vector<SteamUGCDetails_t*> Mods::workshopSubscribedItemList;
 std::vector<std::pair<std::string, uint64>> Mods::workshopLoadedFileIDMap;
 std::vector<Mods::WorkshopTags_t> Mods::tag_settings = {
@@ -11461,7 +11461,7 @@ bool Mods::removePathFromMountedFiles(std::string findStr)
 		if ( line.first.compare(findStr) == 0 )
 		{
 			// found entry, remove from list.
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			for ( std::vector<std::pair<std::string, uint64>>::iterator itId = Mods::workshopLoadedFileIDMap.begin();
 				itId != Mods::workshopLoadedFileIDMap.end(); ++itId )
 			{

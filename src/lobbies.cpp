@@ -16,7 +16,7 @@ See LICENSE for details.
 #ifdef USE_EOS
 #include "eos.hpp"
 #endif
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include "steam.hpp"
 #endif
 #include "draw.hpp"
@@ -36,7 +36,7 @@ std::string LobbyHandler_t::getCurrentRoomKey() const
     const LobbyServiceType type = multiplayer == SERVER ?
         getHostingType() : getJoiningType();
     if (type == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM) {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
         char roomkey[16];
         snprintf(roomkey, sizeof(roomkey), "s%s", getRoomCode());
         for (auto ptr = roomkey; *ptr != '\0'; ++ptr) {
@@ -92,7 +92,7 @@ std::string LobbyHandler_t::getLobbyJoinFailedConnectString(int result)
 			snprintf(buf, 1023, "Unable to join lobby:\n%s", Language::get(6100));
 			break;
 #ifdef USE_EOS
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		case static_cast<int>(EOS_EResult::EOS_InvalidUser):
 			snprintf(buf, 1023, "Unable to join lobby:\nCrossplay not enabled.");
 			break;
@@ -104,7 +104,7 @@ std::string LobbyHandler_t::getLobbyJoinFailedConnectString(int result)
 		case static_cast<int>(EOS_EResult::EOS_NoChange) :
 			snprintf(buf, 1023, "Unable to join lobby:\nNo match found.");
 			break;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		case static_cast<int>(k_EResultNoMatch) :
 			snprintf(buf, 1023, "Unable to join lobby:\nNo match found.");
 			break;
@@ -145,7 +145,7 @@ std::string LobbyHandler_t::getLobbyJoinFailedConnectString(int result)
 	return buf;
 }
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 bool LobbyHandler_t::validateSteamLobbyDataOnJoin()
 {
 	bool errorOnJoin = false;
@@ -256,7 +256,7 @@ void LobbyHandler_t::handleLobbyListRequests()
 #endif
 	if ( joiningType == LOBBY_STEAM )
 	{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		// lobby entered
 		if ( connectingToLobbyStatus != EResult::k_EResultOK )
 		{
@@ -348,7 +348,7 @@ void LobbyHandler_t::handleLobbyListRequests()
 		switch ( searchType )
 		{
 			case LOBBY_STEAM:
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				hasLobbyListRequestReturned = !requestingLobbies;
 #endif
 				break;
@@ -387,7 +387,7 @@ void LobbyHandler_t::updateSearchResults()
 
 	if ( searchType == LOBBY_STEAM )
 	{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		Uint32 steamLobbyIndex = 0;
 		for ( auto& result : lobbyDisplayedSearchResults )
 		{
@@ -483,7 +483,7 @@ Sint32 LobbyHandler_t::getDisplayedResultLobbyIndex(int selection)
 	return lobbyDisplayedSearchResults.at(selection).first;
 }
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 void LobbyHandler_t::steamValidateAndJoinLobby(CSteamID& id)
 {
 	steamLobbyToValidate.Set(id.GetAccountID(), id.GetEUniverse(), id.GetEAccountType());

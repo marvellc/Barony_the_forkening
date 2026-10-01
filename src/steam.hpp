@@ -48,7 +48,7 @@ extern bool requestingLobbies;
 
 extern void* currentLobby; // CSteamID to the current game lobby
 extern std::string cmd_line; // for game join requests
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 extern char currentLobbyName[32];
 extern ELobbyType currentLobbyType;
 extern ELobbyType steamLobbyTypeUserConfigured;

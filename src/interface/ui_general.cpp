@@ -683,7 +683,7 @@ void openURLTryWithOverlay(const std::string& url, bool forceSystemBrowser)
 	bool useSystemBrowser = false;
 	if ( !forceSystemBrowser )
 	{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		if ( SteamUtils()->IsOverlayEnabled() )
 		{
 			SteamFriends()->ActivateGameOverlayToWebPage(url.c_str());

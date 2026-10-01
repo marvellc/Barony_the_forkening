@@ -29,7 +29,7 @@
 #include "scores.hpp"
 #include "menu.hpp"
 #include "net.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "steam.hpp"
 #endif
@@ -1240,7 +1240,7 @@ void gameLogic(void)
 
 	// damage indicator timers
 	handleDamageIndicatorTicks();
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	MainMenu::richPresence.process();
 #endif
 
@@ -5041,7 +5041,7 @@ bool handleEvents(void)
 					// reobtain haptic devices for each existing controller
 					controller.reinitHaptic();
 				}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
                 // on steam deck, player 1 always needs a controller.
                 if (SteamUtils()->IsSteamRunningOnSteamDeck()) {
                     if (id >= 0 && !inputs.hasController(0)) {
@@ -7194,7 +7194,7 @@ int main(int argc, char** argv)
  #ifndef NINTENDO
 		char *basepath = getenv("HOME");
   #ifdef USE_EOS
-   #ifdef STEAMWORKS
+   #if defined(STEAMWORKS) && !defined(EDITOR)
 		//Steam + EOS
 		snprintf(outputdir, sizeof(outputdir), "%s/.barony", basepath);
    #else
@@ -7224,7 +7224,7 @@ int main(int argc, char** argv)
 		{
 			for (c = 1; c < argc; c++)
 			{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			    cmd_line += argv[c];
 			    cmd_line += " ";
 #endif
@@ -7319,7 +7319,7 @@ int main(int argc, char** argv)
 		if ( (c = initApp("Barony", fullscreen)) )
 		{
 			printlog("Critical error: %d\n", c);
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Uh oh",
 									"Barony has encountered a critical error and cannot start.\n\n"
 									"Please check the log.txt file in the game directory for additional info\n"
@@ -7454,7 +7454,7 @@ int main(int argc, char** argv)
 			}
 #endif
 			// handle steam callbacks
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( g_SteamLeaderboards )
 			{
 				g_SteamLeaderboards->ProcessLeaderboardUpload();

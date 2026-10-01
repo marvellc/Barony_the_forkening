@@ -31,7 +31,7 @@
 #include "../ui/MainMenu.hpp"
 #include "../mod_tools.hpp"
 #include "../book.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "../steam.hpp"
 #endif

@@ -23,7 +23,7 @@
 #include "player.hpp"
 #include "mod_tools.hpp"
 #include "interface/ui.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include <steam/steam_gameserver.h>
 #include "steam.hpp"
@@ -33,7 +33,7 @@
 #define STEAMDEBUG
 //#define DEBUG_ACHIEVEMENTS
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 
 static std::string roomkey_cached;
 Uint32 numSteamLobbies = 0;
@@ -55,7 +55,7 @@ void* steamIDRemote[MAXPLAYERS] = {NULL, NULL, NULL, NULL};
 
 char currentLobbyName[32] = { 0 };
 Uint32 currentSvFlags = 0;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 ELobbyType currentLobbyType = k_ELobbyTypePublic;
 ELobbyType steamLobbyTypeUserConfigured = k_ELobbyTypePublic;
 bool steamLobbyFriendsOnlyUserConfigured = true;
@@ -140,7 +140,7 @@ const std::string CSteamLeaderboards::leaderboardNames[CSteamLeaderboards::k_num
 //These are all an utter bodge. They really, really should not exist, but potato.
 
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 //TODO: Unused?
 void (*cpp_SteamServerClientWrapper_GameServerPingOnServerResponded)(void* steamID);
 void (*cpp_SteamServerClientWrapper_OnLobbyDataUpdate)(void* pCallback);
@@ -861,7 +861,7 @@ void steamAchievement(const char* achName)
 	{
 		//messagePlayer(clientnum, "You've unlocked an achievement!\n [%s]",c_SteamUserStats_GetAchievementDisplayAttribute(achName,"name"));
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		SteamUserStats()->SetAchievement(achName);
 		SteamUserStats()->StoreStats();
 #else
@@ -1291,7 +1291,7 @@ void steamStatisticUpdate(int statisticNum, ESteamStatTypes type, int value)
 		default:
 			break;
 	}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	g_SteamStatistics->StoreStats(); // update server's stat counter.
 #else
 
@@ -1391,7 +1391,7 @@ void steamStatisticUpdateClient(int player, int statisticNum, ESteamStatTypes ty
 
 void indicateAchievementProgressAndUnlock(const char* achName, int currentValue, int maxValue)
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	SteamUserStats()->IndicateAchievementProgress(achName, currentValue, maxValue);
 #elif (defined USE_EOS || defined LOCAL_ACHIEVEMENTS)
 	UIToastNotificationManager.createStatisticUpdateNotification(achName, currentValue, maxValue);
@@ -1573,7 +1573,7 @@ void steamIndicateStatisticProgress(int statisticNum, ESteamStatTypes type)
 #endif // !STEAMWORKS
 }
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 
 /*-------------------------------------------------------------------------------
 

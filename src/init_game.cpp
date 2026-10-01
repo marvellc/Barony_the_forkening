@@ -24,7 +24,7 @@
 #include "magic/magic.hpp"
 #include "monster.hpp"
 #include "net.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "steam.hpp"
 #endif
@@ -160,7 +160,7 @@ int initGame()
 	lobbyChatboxMessages.last = NULL;
 
 	// steam stuff
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	cpp_SteamServerWrapper_Instantiate(); //TODO: Remove these wrappers.
 	cpp_SteamServerClientWrapper_Instantiate();
 
@@ -790,7 +790,7 @@ void deinitGame()
 	list_FreeAll(&lobbyChatboxMessages);
 
 	// steam stuff
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	cpp_SteamServerWrapper_Destroy();
 	cpp_SteamServerClientWrapper_Destroy();
 	if ( currentLobby )
@@ -1045,7 +1045,7 @@ void loadAchievementData(const char* path) {
 
 void sortAchievementsForDisplay()
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if ( Compendium_t::AchievementData_t::achievementsNeedFirstData )
 	{
 		//if ( SteamUser()->BLoggedOn() )

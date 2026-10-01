@@ -70,7 +70,7 @@ using std::string; //Instead of including an entire namespace, please explicitly
 #include "nintendo/baronynx.hpp"
 #endif
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #define STEAM_APPID 371970
 #endif
 
@@ -185,7 +185,7 @@ extern bool autoLimbReload;
 #include "savepng.hpp"
 
 //Ifdef steam or something?
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 //#include <steamworks_cwrapper/steam_wrapper.h>
 #endif
 
@@ -911,7 +911,7 @@ void GO_SwapBuffers(SDL_Window* screen);
 static const int NUM_STEAM_STATISTICS = 73;
 extern SteamStat_t g_SteamStats[NUM_STEAM_STATISTICS];
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
  #include <steam/steam_api.h>
  struct SteamGlobalStat_t
  {

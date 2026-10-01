@@ -9,12 +9,12 @@ See LICENSE for details.
 
 -------------------------------------------------------------------------------*/
 #include "main.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "steam.hpp"
 #endif
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 
 CSteamWorkshop::CSteamWorkshop() :
 	createItemResult(),

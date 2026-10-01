@@ -95,7 +95,7 @@ void buttonGamemodsOpenModifyExistingWindow(button_t* my);
 void buttonGamemodsStartModdedGame(button_t* my);
 void buttonInviteFriends(button_t* my);
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 void buttonGamemodsPrepareWorkshopItemUpload(button_t* my);
 void buttonGamemodsSetWorkshopItemFields(button_t* my);
 void buttonGamemodsStartUploadItem(button_t* my);
@@ -174,7 +174,7 @@ bool gamemodsMountAllExistingPaths();
 //extern bool gamemods_modelsListRequiresReload;
 //extern bool gamemods_soundListRequiresReload;
 //extern bool gamemods_modPreload;
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 void gamemodsWorkshopPreloadMod(int fileID, std::string modTitle);
 void gamemodsWindowUploadInit(bool creatingNewItem);
 void gamemodsSubscribedItemsInit();

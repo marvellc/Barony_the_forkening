@@ -16,7 +16,7 @@
 
 #ifdef BARONY_DRM_FREE
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #undef STEAMWORKS
 #endif // STEAMWORKS
 

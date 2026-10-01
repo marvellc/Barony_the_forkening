@@ -7824,7 +7824,7 @@ void actPlayer(Entity* my)
 			&& ((stats[PLAYER_NUM]->playerRace >= 13 && stats[PLAYER_NUM]->playerRace <= 17)
 			|| client_classes[PLAYER_NUM] >= 21) )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( !enabledDLCPack3 || !SteamApps()->BIsDlcInstalled(1010822) )
 			{
 				int* potato = NULL;

@@ -23,7 +23,7 @@ See LICENSE for details.
 #include "paths.hpp"
 #include "book.hpp"
 #include "shops.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #endif
 #include "player.hpp"

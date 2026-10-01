@@ -323,7 +323,7 @@ void EOS_CALL EOSFuncs::OnCreateUserCrossplayCallback(const EOS_Connect_CreateUs
 		EOS.CurrentUserInfo.bUserLoggedIn = true;
 		EOS.SubscribeToConnectionRequests();
 		EOS.AddConnectAuthExpirationNotification();
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		EOS.CrossplayAccountManager.connectLoginStatus = EOS_EResult::EOS_Success;
 		EOS_ELoginStatus authLoginStatus = EOS_Auth_GetLoginStatus(EOS_Platform_GetAuthInterface(EOS.PlatformHandle),
 			EOSFuncs::Helpers_t::epicIdFromString(EOS.CurrentUserInfo.epicAccountId.c_str()));
@@ -3691,7 +3691,7 @@ void EOSFuncs::CrossplayAccounts_t::handleLogin()
 
 	if (initLogin)
 	{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		cpp_SteamMatchmaking_RequestAppTicket();
 		createNotification();
 		awaitingAppTicketResponse = true;
@@ -3731,7 +3731,7 @@ void EOSFuncs::CrossplayAccounts_t::handleLogin()
 				n->actionFlags |= (UIToastNotification::ActionFlags::UI_NOTIFICATION_AUTO_HIDE);
 				n->actionFlags |= (UIToastNotification::ActionFlags::UI_NOTIFICATION_CLOSE);
 				n->showMainCard();
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 				n->setMainText("Steam account linked.\nCrossplay enabled.");
 #else
 				n->setMainText("Successfully logged into\nEpic Online Services (tm)");

@@ -14,7 +14,7 @@
 #include <vector>
 #include <chrono>
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "steam.hpp"
 #endif

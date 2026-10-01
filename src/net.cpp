@@ -27,7 +27,7 @@
 #include "scores.hpp"
 #include "collision.hpp"
 #include "paths.hpp"
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 #include <steam/steam_api.h>
 #include "steam.hpp"
 #endif
@@ -91,7 +91,7 @@ void pollNetworkForShutdown() {
 			}
 		}
 	}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	SteamAPI_RunCallbacks();
 #endif // STEAMWORKS
 #ifdef USE_EOS
@@ -129,7 +129,7 @@ int sendPacket(UDPsocket sock, int channel, UDPpacket* packet, int hostnum, bool
 	    }
 		if ( LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( steamIDRemote[hostnum] )
 			{
 				return SteamNetworking()->SendP2PPacket(*static_cast<CSteamID* >(steamIDRemote[hostnum]), packet->data, packet->len, tryReliable? k_EP2PSendReliable : k_EP2PSendUnreliable, 0);
@@ -176,7 +176,7 @@ int sendPacketSafe(UDPsocket sock, int channel, UDPpacket* packet, int hostnum)
 	{
 		if ( LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( !steamIDRemote[hostnum] )
 			{
 				return 0;
@@ -236,7 +236,7 @@ int sendPacketSafe(UDPsocket sock, int channel, UDPpacket* packet, int hostnum)
 	{
 		if ( LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			if ( steamIDRemote[hostnum] )
 			{
 				return SteamNetworking()->SendP2PPacket(*static_cast<CSteamID* >(steamIDRemote[hostnum]), packetsend->packet->data, packetsend->packet->len, k_EP2PSendReliable, 0);
@@ -6837,7 +6837,7 @@ void clientHandlePacket()
 
 void clientHandleMessages(Uint32 framerateBreakInterval)
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if (!directConnect && !net_handler)
 	{
 		net_handler = new NetHandler();
@@ -6858,7 +6858,7 @@ void clientHandleMessages(Uint32 framerateBreakInterval)
 #if defined(STEAMWORKS) || defined(USE_EOS)
 		if ( LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			//Steam stuff goes here.
 			if ( disableMultithreadedSteamNetworking )
 			{
@@ -9507,7 +9507,7 @@ void serverHandlePacket()
 
 void serverHandleMessages(Uint32 framerateBreakInterval)
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	if (!directConnect && !net_handler)
 	{
 		net_handler = new NetHandler();
@@ -9528,7 +9528,7 @@ void serverHandleMessages(Uint32 framerateBreakInterval)
 #if defined(STEAMWORKS) || defined(USE_EOS)
 		if ( LobbyHandler.getP2PType() == LobbyHandler_t::LobbyServiceType::LOBBY_STEAM )
 		{
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			//Steam stuff goes here.
 			if ( disableMultithreadedSteamNetworking )
 			{
@@ -9789,7 +9789,7 @@ void closeNetworkInterfaces()
 		SDLNet_FreeSocketSet(tcpset);
 		tcpset = nullptr;
 	}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
     for (int c = 0; c < MAXPLAYERS; ++c) {
         if (steamIDRemote[c]) {
             cpp_Free_CSteamID(steamIDRemote[c]);
@@ -9893,7 +9893,7 @@ void NetHandler::toggleMultithreading(bool disableMultithreading)
 
 void NetHandler::initializeMultithreadedPacketHandling()
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 
 	printlog("Initializing multithreaded packet handling.");
 
@@ -10024,7 +10024,7 @@ int EOSPacketThread(void* data)
 
 int steamPacketThread(void* data)
 {
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 
 	if (!data)
 	{

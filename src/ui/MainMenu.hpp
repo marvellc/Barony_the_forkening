@@ -395,7 +395,7 @@ namespace MainMenu {
 		"shaman", "hunter", "bard", "sapper", "scion", "hermit", "paladin"
 	};
 
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 	class RichPresence
 	{
 		int _currentlevel = 0;

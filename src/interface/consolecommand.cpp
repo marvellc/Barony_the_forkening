@@ -2778,7 +2778,7 @@ namespace ConsoleCommands {
 				printlog("[Mods]: Adding mod \"%s\" in path \"%s\"", directory.c_str(), modname.c_str());
 				Mods::mountedFilepaths.push_back(std::make_pair(directory, modname));
 			}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 			else
 			{
 				std::string directory = dir;
@@ -3459,7 +3459,7 @@ namespace ConsoleCommands {
 			messagePlayer(clientnum, MESSAGE_MISC, Language::get(277));
 			return;
 		}
-#ifdef STEAMWORKS
+#if defined(STEAMWORKS) && !defined(EDITOR)
 		steamUnsetAchievement("BARONY_ACH_TAKING_WITH");
 		steamUnsetAchievement("BARONY_ACH_TELEFRAG");
 		steamUnsetAchievement("BARONY_ACH_FASCIST");
