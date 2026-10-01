@@ -83,3 +83,10 @@ xcode/Barony/Barony.xcodeproj/xcuserdata/*
 *.ilk
 /VS.2015/x64
 *.sqlite-journal
+/fmod
+/.idea
+/themes
+/Barony.AppDir
+/.appimage-tools/appimagetool-x86_64.AppImage
+/.appimage-tools/linuxdeploy-x86_64.AppImage
+/.glsld/config.json
